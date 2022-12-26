@@ -1,51 +1,36 @@
-import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from "react-router-dom"
-import { LoginPage, RegisterPage } from "../auth/pages"
-import { JournalPage } from "../journal/pages/JournalPage"
+import { Navigate, Route, Routes } from "react-router-dom"
+import { CheckingAuth } from "../ui"
+import { AuthRoutes } from "../auth/routes/AuthRoutes"
+import { JournalRoutes } from "../journal/routes/JournalRoutes"
+import { useCheckAuth } from "../hooks"
 
 
 export const AppRouter = () => {
 
-    const router = createBrowserRouter([
-        {
-            path: "/",
-            children: [
-                {
-                    path: "/",
-                    element: <JournalPage />
-                },
-                {
-                    path: "*",
-                    element: <Navigate to={"/"} />
-                }
-            ]
-        },
-        {
-            path: "auth",
-            children: [
-                {
-                    path: "/auth/",
-                    element: <Navigate to={"login"} />
-                },
-                {
-                    path: "login",
-                    element: <LoginPage />
-                },
-                {
-                    path: "register",
-                    element: <RegisterPage />
-                },
-                {
-                    path: "*",
-                    element: <Navigate to={"login"} />
-                }
-            ]
-        },
-        
-    ])
+    const status = useCheckAuth();
+    // !Si hay algún cambio, se renderizará un componente de carga.
+    if (status === 'checking') {
+        return <CheckingAuth />
+    }
 
-    
+return (
+    <Routes>
 
-    return (
-        <RouterProvider router={router} />
-    )
+        {
+          (status === 'authenticated')
+           ? <Route path="/*" element={ <JournalRoutes /> } />
+           : <Route path="/auth/*" element={ <AuthRoutes /> } />
+        }
+
+        <Route path='/*' element={ <Navigate to='/auth/login' />  } />
+
+        {/* Login y Registro */}
+        {/* <Route path="/auth/*" element={ <AuthRoutes /> } /> */}
+
+        {/* JournalApp */}
+        {/* <Route path="/*" element={ <JournalRoutes /> } /> */}
+
+    </Routes>
+
+)
 }
