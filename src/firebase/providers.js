@@ -1,17 +1,18 @@
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import { FirebaseAuth } from "./config";
 
-
-
 const googleProvider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {
 
+    // !NOTA: PARA INICIAR SESIÓN DESDE UN TELÉFONO, ES NECESARIO COLOCAR EN LA LISTA BLANCA EL DOMINIO DESDE EL CUAL SE ESTÁ ACCEDIENDO
 
     try {
         // Los parámetros que recibe son el Auth, que ya está listo para ser consumido
         // en el config.js y el provider que acabamos de declarar.
-        const result = await signInWithPopup(FirebaseAuth, googleProvider);
+        // const result = await signInWithPopup(FirebaseAuth, googleProvider);
+        const result = await signInWithPopup(FirebaseAuth, googleProvider)
+
 
         /*
         ***Linea para obtener las credenciales en caso de necesitarlas***
@@ -75,7 +76,7 @@ export const loginWithEmailPassword = async({email, password}) => {
             uid, photoURL, displayName
         }
     } catch (error) {
-        // console.log(error.);
+        console.log(error);
         return {
             ok: false,
             errorMessage: error.message
