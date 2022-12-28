@@ -11,6 +11,12 @@ export const useForm = ( initialForm = {}, formValidations = {} ) => {
       createValidators();    
     }, [ formState ]);
 
+    // Si el formulario inicial cambia, debe actualizar las referencias
+    useEffect(() => {
+        setFormState( initialForm );
+    }, [initialForm]);
+    
+
     // Se usa para evitar que se reprocese el valor cuando no sea necesario
     const isFormValid = useMemo( () => {
         

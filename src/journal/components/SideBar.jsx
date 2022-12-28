@@ -1,12 +1,13 @@
-import { TurnedInNot } from "@mui/icons-material"
-import { Avatar, Box, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
 import { toggleSidebar } from "../../store/ui/uiSlice";
+import { Avatar, Box, Divider, Drawer, List, Toolbar, Typography } from "@mui/material"
+import { SideBarItem } from "./SideBarItem";
 
 
 export const SideBar = ({ drawerWidth = 240 }) => {
 
     const { displayName, photoURL } = useSelector(state => state.auth);
+    const { notes } = useSelector(state => state.journal);
     const { isMobileOpen } = useSelector(state => state.ui);
     const dispatch = useDispatch();
 
@@ -26,18 +27,8 @@ export const SideBar = ({ drawerWidth = 240 }) => {
 
             <List>
                 {
-                    ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'].map(text => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <TurnedInNot />
-                                </ListItemIcon>
-                                <Grid container>
-                                    <ListItemText primary={text} />
-                                    <ListItemText secondary={"Lorem ipsum dolor sit amet consectetur adipisicing elit."} />
-                                </Grid>
-                            </ListItemButton>
-                        </ListItem>
+                    notes.map((note, index) => (
+                        <SideBarItem key={note.id} note={note} index={index} />
                     ))
                 }
             </List>
@@ -52,10 +43,9 @@ export const SideBar = ({ drawerWidth = 240 }) => {
         >
             {/* El Drawer es el sidebar, así llamado en Material */}
             <Drawer
-                // container={container}
                 variant="temporary"
                 open={isMobileOpen}
-                onClose={ () => dispatch( toggleSidebar() ) }
+                onClose={() => dispatch(toggleSidebar())}
                 ModalProps={{
                     keepMounted: true, // Better open performance on mobile.
                 }}
@@ -74,7 +64,7 @@ export const SideBar = ({ drawerWidth = 240 }) => {
                     '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
                 }}
             >
-                { drawer }
+                {drawer}
             </Drawer>
         </Box>
     )

@@ -8,15 +8,17 @@ import { useForm } from "../../hooks";
 import { startGoogleSignIn, startLoginWithEmailPassword } from "../../store/auth";
 
 
+const formData = {
+    email: '',
+    password: ''
+};
+
 export const LoginPage = () => {
 
     const dispatch = useDispatch();
     const { status, errorMessage } = useSelector(state => state.auth);
 
-    const { email, password, onInputChange } = useForm({
-        email: '',
-        password: ''
-    });
+    const { email, password, onInputChange } = useForm(formData);
 
     //Si el status cambia, se va a obtener un nuevo valor. Si el status nunca cambia, entonces no se volverá a calcular
 
