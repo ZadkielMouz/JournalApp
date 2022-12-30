@@ -37,12 +37,20 @@ export const RegisterPage = () => {
 		isFormValid, displayNameValid, emailValid, passwordValid,
 	} = useForm(formData, formValidation);
 
+	const capitalizeName = (name) => {
+		const arr1 = name.split(' ');
+		const arr2 = arr1.map( str => str.charAt(0).toUpperCase().concat(str.slice(1)));
+
+		return arr2.join(' ');
+	}
+
 	const onSubmit = (event) => {
 		event.preventDefault();
 		setFormSubmitted(true);
 
 		if (!isFormValid) return;
 
+		formState.displayName = capitalizeName(formState.displayName);
 		dispatch(startCreatingUserWithEmailPassword(formState));
 	}
 
